@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "cron": "^1.7.1",
     "feedparser": "^2.2.9",
     "request": "^2.88.0"
   },
