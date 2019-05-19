@@ -6,6 +6,7 @@
   "dependencies": {
     "cron": "^1.7.1",
     "feedparser": "^2.2.9",
+    "mongodb": "^3.2.5",
     "request": "^2.88.0"
   },
   "devDependencies": {},
