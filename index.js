@@ -1,6 +1,6 @@
 var FeedParser = require('feedparser');
 var request = require('request'); // for fetching the feed
-var req = request('https://weekly.75team.com/rss.php')
+var req = request(require('./rss')[(new Date).getDay() - 1])
 var feedparser = new FeedParser(/*[options]*/);
 const MongoClient = require('mongodb').MongoClient;
 // Connection URL
@@ -67,11 +67,11 @@ client.connect(function (err) {
         if (err) throw err;
         console.log(`${data.data.length}条文档插入成功`);
        const ul = data.data[0].description.match(/<a\s.*?href="(.*?)">(.*?)\<\/a\>/g).map(function (item) {
-          return item.replace(/<a\s.*?href="(.*?)">(.*?)\<\/a\>/, '[$2]($1)')
+          return item.replace(/<a\s.*?href="([^"]*)"[^>]*>(.*?)\<\/a\>/, '[$2]($1)')
         });
 
        console.log(`${data.data[0].title}\n${ul.join('\n')}`)
-        curl.postJSON(`https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=${key}`, {
+        curl.postJSON(`http://in.qyapi.weixin.qq.com/cgi-bin/webhook/send?key=${key}`, {
           "msgtype": "markdown",
           "markdown": {
             content: `${data.data[0].title}\n${ul.join('\n')}`
@@ -88,8 +88,7 @@ client.connect(function (err) {
 
 });
 
-
 /*var CronJob = require('cron').CronJob;
 new CronJob('* * * * * *', function () {
     console.log('You will see this message every second');
-}, null, true, 'America/Los_Angeles');*/
+}, null, true, 'China/Beijing');*/
